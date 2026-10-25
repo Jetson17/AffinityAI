@@ -1,7 +1,7 @@
 # AffinityAI — Intelligent Friend Recommendation System
 
 > **AI/ML-Powered Academic & Social Discovery Platform with Graph Theory & Algorithm Laboratory**  
-> *A full-stack computer science project combining graph algorithms, academic profile matching, and supervised machine learning link prediction.*
+
 
 ---
 
@@ -667,6 +667,3 @@ npm run build:client
 
 ---
 
-## 22. License
-
-This project is licensed under the [ISC License](file:///d:/Documents/AI/Friend-Recommendation-System/package.json#L30). You are free to use, modify, and distribute this software for educational and personal academic purposes.
