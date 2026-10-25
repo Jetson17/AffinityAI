@@ -21,6 +21,9 @@ const router = express.Router();
  */
 router.get('/', authenticateToken, async (req, res) => {
     try {
+        if (req.user && req.user.role === 'admin') {
+            return res.status(403).json({ error: 'Administrative accounts cannot receive student friend recommendations.' });
+        }
         const currentUserId = req.user.id;
 
         // Fetch all active users with profile bio and interests

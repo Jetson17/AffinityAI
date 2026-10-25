@@ -68,3 +68,8 @@ Thumbs.db
 Desktop.ini
 *.swp
 *.swo
+
+# Archives & Submissions
+*.zip
+*.tar.gz
+*.rar

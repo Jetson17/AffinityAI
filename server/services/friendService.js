@@ -89,6 +89,11 @@ class FriendService {
             throw new Error('Cannot send friend request to an administrator account.');
         }
 
+        const sender = db.prepare('SELECT id, role FROM users WHERE id = ?').get(senderId);
+        if (sender && PRIVILEGED_ROLES.has((sender.role || '').toLowerCase())) {
+            throw new Error('Administrator accounts cannot participate in student friendships.');
+        }
+
         if (this.areFriends(senderId, receiverId)) {
             throw new Error('You are already friends with this user.');
         }

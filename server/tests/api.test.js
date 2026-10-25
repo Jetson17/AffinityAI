@@ -134,9 +134,27 @@ describe('Full API Integration Tests', () => {
             assert.equal(res.status, 400);
             assert.match(res.body.error, /cannot send friend request to an administrator/i);
         });
+
+        test('Admin cannot send friend request to student - returns 400 Bad Request', async () => {
+            const res = await request(app)
+                .post('/api/friends/request/1')
+                .set('Authorization', `Bearer ${adminToken}`);
+
+            assert.equal(res.status, 400);
+            assert.match(res.body.error, /administrator.*cannot participate in student friendships/i);
+        });
     });
 
     describe('3. Recommendations API', () => {
+        test('Admin receives 403 Forbidden on GET /api/recommendations', async () => {
+            const res = await request(app)
+                .get('/api/recommendations')
+                .set('Authorization', `Bearer ${adminToken}`);
+
+            assert.equal(res.status, 403);
+            assert.match(res.body.error, /administrative accounts cannot receive student friend recommendations/i);
+        });
+
         test('GET /api/recommendations returns ranked candidates for Alice and strictly excludes Admin User', async () => {
             const res = await request(app)
                 .get('/api/recommendations')

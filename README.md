@@ -35,7 +35,7 @@ In addition to intelligent recommendations, AffinityAI includes an interactive *
 - **Student Dashboard**: Quick overview of connection counts, pending incoming/outgoing friend requests, and top suggested peers.
 - **Intelligent Recommendations**: AI-ranked friend suggestions displaying match percentages, common friends, and shared academic topics with explainable rationale.
 - **Connections & Requests Management**: Dedicated views to browse confirmed friends, view outgoing requests, and accept or reject incoming invitations.
-- **Friend-Only Direct Messaging**: Real-time 1-on-1 messaging strictly restricted to confirmed friends (`FriendService.areFriends`), featuring unread counters and chronological message history.
+- **Friend-Only Direct Messaging**: Direct 1-on-1 messaging strictly restricted to confirmed friends (`FriendService.areFriends`), powered by periodic client polling (every 3.5 seconds) with optimistic UI updates, unread counters, and chronological message history. (Note: The messaging module is polling-based and does not use WebSockets).
 - **Student Directory & Search**: Browse campus students with real-time name and interest filtering.
 - **Profile Management**: Update personal bio and academic interests with instant feedback on recommendation quality.
 
@@ -380,7 +380,7 @@ Open your web browser and navigate to `http://localhost:5173`.
    - Clear explainable rationale for why this person was suggested.
 4. **Send Friend Requests**: Click **Add Friend** on any recommendation or user card.
 5. **Manage Requests & Friends**: Navigate to **Friends** to review incoming requests. Click **Accept** to establish a confirmed mutual friendship or **Decline** to dismiss.
-6. **Direct Messaging**: Click **Messages** to chat with any confirmed friend. Send messages in real time; unread counts update automatically. Note: Students cannot message users who are not confirmed friends.
+6. **Direct Messaging**: Click **Messages** to chat with any confirmed friend. The client periodically polls for new messages every 3.5 seconds with optimistic local message delivery. Unread badges update automatically. Note: Students cannot message users who are not confirmed friends, and administrators cannot participate in student chats.
 7. **Profile Configuration**: Click **Profile** to update your bio or select academic interest tags. The recommendation engine immediately factors in your updated interests on your next discovery refresh.
 
 ### Administrator Workflow
@@ -422,14 +422,14 @@ All API endpoints are prefixed with `/api`. Protected routes require a valid JWT
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/friends` | Authenticated | List all confirmed mutual friends of the logged-in student |
 | `GET` | `/api/friends/requests` | Authenticated | List all incoming and outgoing pending friend requests |
-| `POST` | `/api/friends/request` | Authenticated | Send a friend request to a candidate student |
+| `POST` | `/api/friends/request/:targetId` | Authenticated (Students only) | Send a friend request to a candidate student (Admin accounts blocked) |
 | `POST` | `/api/friends/request/:id/accept` | Authenticated | Accept a received pending friend request |
 | `POST` | `/api/friends/request/:id/reject` | Authenticated | Reject a received pending friend request |
 
 ### Recommendation Endpoints
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/recommendations` | Authenticated | Retrieve hybrid ML-ranked recommendations for current user |
+| `GET` | `/api/recommendations` | Authenticated (Students only) | Retrieve hybrid ML-ranked recommendations for current user (Admins blocked) |
 
 ### Messaging Endpoints (Friend-Only)
 | Method | Endpoint | Access | Description |
@@ -565,7 +565,7 @@ The Algorithm Lab demonstrates three distinct computational concepts:
 The project includes automated test suites covering both the full-stack JavaScript application and the Python Machine Learning module:
 
 ```powershell
-# 1. Run backend API & algorithm tests (68 tests across 15 test suites)
+# 1. Run backend API & algorithm tests (70 tests across 15 test suites)
 npm test
 
 # 2. Run Python ML unit tests (8 tests covering extraction, training, inference)
@@ -579,7 +579,7 @@ npm run build:client
 ```
 
 ### Verified Test Results Summary
-- **Backend Node.js Tests**: **68 passed**, 0 failed (15 suites, duration $\approx 10.6\text{s}$)
+- **Backend Node.js Tests**: **70 passed**, 0 failed (15 suites, duration $\approx 6.7\text{s}$)
   - Friend recommendation candidate filtering and triadic closure
   - Cold-start handling for students with 0 friends
   - Canonical topic synonym extraction and boundary precision
@@ -589,12 +589,13 @@ npm run build:client
   - Authentication, password hashing, and JWT expiration
   - Friend-only direct messaging authorization
   - Admin role authorization and student status toggle safeguards
-- **Python ML Tests**: **8 passed**, 0 failed (duration $\approx 85\text{s}$)
+  - Admin restrictions (blocking admin accounts from receiving recommendations or sending friend requests)
+- **Python ML Tests**: **8 passed**, 0 failed (duration $\approx 1.7\text{s}$)
   - Topic synonym extraction and boundary precision
   - 7-feature vector extraction and cold-start handling
   - Benchmark dataset reproducibility and stratification
   - End-to-end model training, serialization, and inference
-- **Frontend Production Build**: Vite built successfully (`dist/index.html`, CSS, JS chunks) with **0 errors**.
+- **Frontend Production Build**: Vite built successfully (`dist/index.html`, CSS, JS chunks) with **0 errors** in $\approx 243\text{ms}$.
 
 ---
 
