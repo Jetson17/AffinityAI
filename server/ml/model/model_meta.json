@@ -1,0 +1,42 @@
+{
+  "production_model": "Logistic Regression",
+  "trained_at": "2026-10-25T22:18:08.115948",
+  "random_seed": 42,
+  "feature_columns": [
+    "mutual_friends",
+    "friend_jaccard",
+    "shared_interests",
+    "interest_jaccard",
+    "target_degree",
+    "candidate_degree",
+    "adamic_adar_approx"
+  ],
+  "logistic_regression_metrics": {
+    "model_name": "Logistic Regression (Standardized)",
+    "accuracy": 0.8897,
+    "precision": 0.8947,
+    "recall": 0.7556,
+    "f1_score": 0.8193,
+    "roc_auc": 0.9286
+  },
+  "random_forest_metrics": {
+    "model_name": "Random Forest Classifier (n=100, depth=5)",
+    "accuracy": 0.8971,
+    "precision": 0.8974,
+    "recall": 0.7778,
+    "f1_score": 0.8333,
+    "roc_auc": 0.9431
+  },
+  "feature_coefficients": {
+    "mutual_friends": 0.9236,
+    "friend_jaccard": 0.4841,
+    "shared_interests": 1.018,
+    "interest_jaccard": -0.1982,
+    "target_degree": -0.624,
+    "candidate_degree": -0.3283,
+    "adamic_adar_approx": 1.721
+  },
+  "training_samples": 542,
+  "test_samples": 136,
+  "dataset_type": "synthetic_educational_benchmark"
+}

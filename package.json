@@ -1,0 +1,36 @@
+{
+  "name": "affinity-ai",
+  "version": "1.0.0",
+  "description": "AffinityAI — Intelligent Friend Recommendation System with Graph Traversal, Hybrid ML Link Prediction, and Algorithm Laboratory",
+  "scripts": {
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "install:all": "npm run install:server && npm run install:client",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "seed": "cd server && npm run seed",
+    "test": "cd server && npm test",
+    "ml:train": "cd server/ml && py train.py",
+    "ml:evaluate": "cd server/ml && py evaluate.py",
+    "ml:test": "cd server/ml && py -m pytest -v",
+    "test:all": "npm run test && npm run ml:test",
+    "build:client": "cd client && npm run build"
+  },
+  "keywords": [
+    "affinity-ai",
+    "friend-recommendation",
+    "machine-learning",
+    "link-prediction",
+    "graph-algorithms",
+    "kruskal-mst",
+    "kahns-algorithm",
+    "topological-sort",
+    "react",
+    "vite",
+    "express",
+    "sqlite",
+    "scikit-learn"
+  ],
+  "author": "B.Tech CSE Student",
+  "license": "ISC"
+}
